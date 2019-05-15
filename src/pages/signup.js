@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
+import * as ROUTES from '../routing/router.js';
 
-//import { withFirebase } from '../Firebase';
-
-
+//import { FirebaseContext } from '../Firebase';
+import { withFirebase } from '../Firebase';
 const SignUpPage = () => (
   <div>
-    <h1>SignUp</h1>
+    <h1>Create account</h1>
     <SignUpForm />
   </div>
 );
@@ -41,7 +41,7 @@ class SignUpFormBase extends Component {
           })
           .then(() => {
             this.setState({ ...INITIAL_STATE });
-            //this.props.history.push(ROUTES.HOME);
+            this.props.history.push(ROUTES.HOME);
           })
           .catch(error => {
             this.setState({ error });
@@ -113,11 +113,11 @@ class SignUpFormBase extends Component {
   }
 }
 
-/*const SignUpLink = () => (
+export const SignUpLink = () => (
   <p>
     Don't have an account? <Link to={ROUTES.SIGN_UP}>Sign Up</Link>
   </p>
-); */
-const SignUpForm = withRouter(SignUpFormBase);
+);
+const SignUpForm = withRouter(withFirebase(SignUpFormBase));
 export default SignUpPage;
 export { SignUpForm };
