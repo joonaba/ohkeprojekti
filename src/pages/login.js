@@ -9,7 +9,7 @@ import * as ROUTES from '../routing/router.js';
 
 const SignInPage = () => (
   <div>
-    <h1>login</h1>
+    <h1>Kirjaudu sisään</h1>
     <SignInForm />
     <SignUpLink />
   </div>
@@ -27,7 +27,7 @@ class SignInFormBase extends Component {
 
     this.state = { ...INITIAL_STATE };
   }
-
+// lähetetääm lomakkeen tiedot tietokantaan eli tässä tapauksessa tarkistetaan että käyttäjä on olemassa
   onSubmit = event => {
     const { email, password } = this.state;
 
@@ -43,7 +43,7 @@ class SignInFormBase extends Component {
 
     event.preventDefault();
   };
-
+// teksikentän muokkaaminen
   onChange = event => {
     this.setState({ [event.target.name]: event.target.value });
   };
@@ -60,17 +60,17 @@ class SignInFormBase extends Component {
           value={email}
           onChange={this.onChange}
           type="text"
-          placeholder="Email Address"
+          placeholder="Sähköpostiosoite"
         />
         <input
           name="password"
           value={password}
           onChange={this.onChange}
           type="password"
-          placeholder="Password"
+          placeholder="Salasana"
         />
         <button disabled={isInvalid} type="submit">
-          Sign In
+          Kirjaudu sisään
         </button>
 
         {error && <p>{error.message}</p>}
@@ -78,7 +78,7 @@ class SignInFormBase extends Component {
     );
   }
 }
-
+// tehdään formista yksi constantti joka pitää sisällään tarvittavat asiat routerin ja firebasen toimimiseen 
 const SignInForm = compose(
   withRouter,
   withFirebase,

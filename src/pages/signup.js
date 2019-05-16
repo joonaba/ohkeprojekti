@@ -2,11 +2,10 @@ import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import * as ROUTES from '../routing/router.js';
 
-//import { FirebaseContext } from '../Firebase';
 import { withFirebase } from '../Firebase';
 const SignUpPage = () => (
   <div>
-    <h1>Create account</h1>
+    <h1>Luo käyttäjä</h1>
     <SignUpForm />
   </div>
 );
@@ -29,10 +28,12 @@ class SignUpFormBase extends Component {
   onSubmit = event => {
     const { username, email, passwordOne } = this.state;
 
+    //luodaan firebaseen uusi käyttäjä ja samalla autentikoidaan käyttäjä.
+
     this.props.firebase
       .doCreateUserWithEmailAndPassword(email, passwordOne)
       .then(authUser => {
-        // Create a user in your Firebase realtime database
+
         this.props.firebase
           .user(authUser.user.uid)
           .set({
@@ -67,6 +68,8 @@ class SignUpFormBase extends Component {
       error,
     } = this.state;
 
+    //lomakkeen validonti määtitetään vaatimukset mitä salasanan sähköpostin ja käyttäjänimen pitää täyttää
+
     const isInvalid =
       passwordOne !== passwordTwo ||
       passwordOne === '' ||
@@ -80,31 +83,31 @@ class SignUpFormBase extends Component {
           value={username}
           onChange={this.onChange}
           type="text"
-          placeholder="Full Name"
+          placeholder="Käyttäjänimi"
         />
         <input
           name="email"
           value={email}
           onChange={this.onChange}
           type="text"
-          placeholder="Email Address"
+          placeholder="sähköposti"
         />
         <input
           name="passwordOne"
           value={passwordOne}
           onChange={this.onChange}
           type="password"
-          placeholder="Password"
+          placeholder="Salasana"
         />
         <input
           name="passwordTwo"
           value={passwordTwo}
           onChange={this.onChange}
           type="password"
-          placeholder="Confirm Password"
+          placeholder="Kirjoita salasana uudelleen"
         />
         <button disabled={isInvalid} type="submit">
-          Sign Up
+          Luo käyttäjä
         </button>
 
         {error && <p>{error.message}</p>}
@@ -115,7 +118,7 @@ class SignUpFormBase extends Component {
 
 export const SignUpLink = () => (
   <p>
-    Don't have an account? <Link to={ROUTES.SIGN_UP}>Sign Up</Link>
+    Eikö sinulla ole käyttäjää? <Link to={ROUTES.SIGN_UP}>Luo käyttäjä</Link>
   </p>
 );
 const SignUpForm = withRouter(withFirebase(SignUpFormBase));

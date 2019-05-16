@@ -1,10 +1,10 @@
 import React from 'react';
 
 import { withFirebase } from '../Firebase';
-
+// luodaan nappi jonka avulla sovelluksesta voi kirjautua ulos
 const SignOutButton = ({ firebase }) => (
   <button type="button" onClick={firebase.doSignOut}>
-    Sign Out
+    Kirjaudu ulos
   </button>
 );
 

@@ -11,7 +11,7 @@ const withAuthentication = Component => {
         authUser: null,
       };
     }
-
+    // autentikaatio logiikka eli määritelään käyttäjän autentikaatio tietokannasta
     componentDidMount() {
       this.listener = this.props.firebase.auth.onAuthStateChanged(
         authUser => {
