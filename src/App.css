@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  
 }
 
 .App-logo {
@@ -21,6 +22,13 @@
 
 .App-link {
   color: #61dafb;
+}
+.bg {
+  background: url(./images/pexels-snapwire-292426.jpg) no-repeat center fixed;
+  background-size: cover;
+  min-height: 100vh;
+  
+  
 }
 
 @keyframes App-logo-spin {

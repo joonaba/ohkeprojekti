@@ -2,14 +2,25 @@ import React, { Component } from 'react';
 import { compose } from 'recompose';
 import { AuthUserContext, withAuthorization } from '../Session';
 import { withFirebase } from '../Firebase';
+import './Home.css';
 // kotisivun rakenne
 const HomePage = () => (
   <div>
+  <div className="otsikot">
     <h1>Chatti</h1>
-    <p>Tässä chatissa voi keskustella muiden käyttäjien kanssa</p>
-
+    <p>Käyttäjien välinen chatti</p>
+    </div>
+  <div style={{
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+}}>
     <Programs />
+    </div>
+  
+  
   </div>
+
 );
 // luodaan luokka jossa suurin osa sivun toiminnallisuudesta tapahtuu (nimi programs hämäävä koska alunperin oli tarkoituksena tehdä ohjelma jossa voi luoda kuntosali ohjelmia ja jakaa niitä muiden kanssa)
 class ProgramsBase extends Component {
@@ -40,6 +51,9 @@ class ProgramsBase extends Component {
    this.setState({ text: '' });
 
    event.preventDefault();
+   console.log(authUser.email);
+  console.log(authUser.username);
+  
  };
  // haetaan ja listataan viestit tietokannasta
   componentDidMount() {
@@ -120,7 +134,7 @@ class ProgramsBase extends Component {
 }
   //luodaan lista viesteistä
 const ProgramList = ({ programs, onEditProgram, onRemoveProgram }) => (
-  <ul>
+  <ul className='chatti'>
     {programs.map(program => (
       <ProgramItem
        key={program.uid}
@@ -162,6 +176,8 @@ class ProgramItem extends Component {
   render() {
   const { program, onRemoveProgram } = this.props;
   const { editMode, editText } = this.state;
+  
+  
     return (
       <li>
       {editMode ? (

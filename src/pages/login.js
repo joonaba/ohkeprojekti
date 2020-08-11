@@ -1,17 +1,23 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { compose } from 'recompose';
-
+import'./Login.css';
 import { SignUpLink } from './signup';
 //import { PasswordForgetLink } from '../PasswordForget';
 import { withFirebase } from '../Firebase';
 import * as ROUTES from '../routing/router.js';
 
 const SignInPage = () => (
-  <div>
+  <div style={{
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+}}>
+  <div className="body1"  >
     <h1>Kirjaudu sisään</h1>
     <SignInForm />
     <SignUpLink />
+  </div>
   </div>
 );
 

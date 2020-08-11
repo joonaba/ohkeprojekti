@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import './App.css'
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import Navigation from './navigation';
@@ -11,11 +12,12 @@ import { withFirebase } from './Firebase';
 import { withAuthentication } from './Session';
 // määritellään mitä sovelluksessa renderoidaan
 const App = () => (
+  
   <Router>
-    <div>
+    <div className="bg" >
       <Navigation />
 
-      <hr />
+      
 
 
       <Route path={ROUTES.SIGN_UP} component={SignUpPage} />
@@ -25,6 +27,7 @@ const App = () => (
 
     </div>
   </Router>
+  
 );
 
 export default withAuthentication(App);

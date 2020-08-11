@@ -1,0 +1,13 @@
+.chatti {
+    background-color:white;
+    border: 2px solid black;
+    max-width: 150vh;
+    min-width: 125vh;
+    min-height: 60vh;
+    border-radius: 5px;
+    
+}
+
+.otsikot {
+    text-align: center;
+}

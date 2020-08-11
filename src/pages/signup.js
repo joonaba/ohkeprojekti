@@ -1,12 +1,21 @@
 import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import * as ROUTES from '../routing/router.js';
-
+import './Signup.css'
 import { withFirebase } from '../Firebase';
 const SignUpPage = () => (
-  <div>
+  <div style={{
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+}}>
+
+  
+  <div className="body2">
     <h1>Luo käyttäjä</h1>
     <SignUpForm />
+  </div>
+
   </div>
 );
 
@@ -31,7 +40,7 @@ class SignUpFormBase extends Component {
     //luodaan firebaseen uusi käyttäjä ja samalla autentikoidaan käyttäjä.
 
     this.props.firebase
-      .doCreateUserWithEmailAndPassword(email, passwordOne)
+      .doCreateUserWithEmailAndPassword(email,username,  passwordOne)
       .then(authUser => {
 
         this.props.firebase
@@ -90,7 +99,7 @@ class SignUpFormBase extends Component {
           value={email}
           onChange={this.onChange}
           type="text"
-          placeholder="sähköposti"
+          placeholder="Sähköposti"
         />
         <input
           name="passwordOne"
