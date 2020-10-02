@@ -15,7 +15,7 @@ const HomePage = () => (
     alignItems: 'center',
     justifyContent: 'center',
 }}>
-    <Programs />
+    <Messages />
     </div>
   
   
@@ -23,7 +23,7 @@ const HomePage = () => (
 
 );
 // luodaan luokka jossa suurin osa sivun toiminnallisuudesta tapahtuu (nimi programs hämäävä koska alunperin oli tarkoituksena tehdä ohjelma jossa voi luoda kuntosali ohjelmia ja jakaa niitä muiden kanssa)
-class ProgramsBase extends Component {
+class MessagesBase extends Component {
   constructor(props) {
     super(props);
 
@@ -40,8 +40,8 @@ class ProgramsBase extends Component {
 
 
 // uuden viestin lähettäminen tietokantaan
-  onCreateProgram = (event, authUser) => {
-   this.props.firebase.programs().push({
+  onCreateMessage = (event, authUser) => {
+   this.props.firebase.messages().push({
      text: this.state.text,
      userId: authUser.uid,
      email: authUser.email,
@@ -59,44 +59,44 @@ class ProgramsBase extends Component {
   componentDidMount() {
     this.setState({ loading: true });
 
-    this.props.firebase.programs().on('value', snapshot => {
-      const programObject = snapshot.val();
+    this.props.firebase.message().on('value', snapshot => {
+      const messageObject = snapshot.val();
 
-      if (programObject) {
-        const programList = Object.keys(programObject).map(key => ({
-         ...programObject[key],
+      if (messageObject) {
+        const messageList = Object.keys(messageObject).map(key => ({
+         ...messageObject[key],
          uid: key,
        }));
         this.setState({
-          programs: programList,
+          messages: messageList,
            loading: false,
           });
       } else {
-        this.setState({ programs: null, loading: false });
+        this.setState({ messages: null, loading: false });
       }
     });
   }
 
   componentWillUnmount() {
-    this.props.firebase.programs().off();
+    this.props.firebase.message().off();
   }
   // viestin poistaminen
-  onRemoveProgram = uid => {
-   this.props.firebase.program(uid).remove();
+  onRemoveMessage = uid => {
+   this.props.firebase.message(uid).remove();
   };
 // viestin muokkaaminen
-  onEditProgram = (program, text) => {
-    const { uid, ...programSnapshot } = program;
+  onEditMessage = (message, text) => {
+    const { uid, ...messageSnapshot } = message;
 
-    this.props.firebase.program(program.uid).set({
-      ...programSnapshot,
+    this.props.firebase.message(message.uid).set({
+      ...messageSnapshot,
       text,
       editedAt: this.props.firebase.serverValue.TIMESTAMP,
     });
   };
 
   render() {
-    const { text, programs, loading } = this.state;
+    const { text, messages, loading } = this.state;
 
     return (
       <AuthUserContext.Consumer>
@@ -104,11 +104,11 @@ class ProgramsBase extends Component {
       <div>
       {loading && <div>Loading ...</div>}
 
-          {programs ? (
-            <ProgramList
-             programs={programs}
-             onEditProgram={this.onEditProgram}
-             onRemoveProgram={this.onRemoveProgram}
+          {messages ? (
+            <messageList
+             messages={messages}
+             onEditMessage={this.onEditMessage}
+             onRemoveMessage={this.onRemoveMessage}
               />
           ) : (
             <div>Ei viestejä :( ...</div>
@@ -116,7 +116,7 @@ class ProgramsBase extends Component {
 
 
 
-        <form onSubmit={event => this.onCreateProgram(event, authUser)}>
+        <form onSubmit={event => this.onCreateMessage(event, authUser)}>
           <input
             type="text"
             value={text}
@@ -133,33 +133,33 @@ class ProgramsBase extends Component {
 
 }
   //luodaan lista viesteistä
-const ProgramList = ({ programs, onEditProgram, onRemoveProgram }) => (
+const MessageList = ({ messages, onEditMessage, onRemoveMessage }) => (
   <ul className='chatti'>
-    {programs.map(program => (
-      <ProgramItem
-       key={program.uid}
-       program={program}
-       onEditProgram={onEditProgram}
-       onRemoveProgram={onRemoveProgram}
+    {messages.map(message => (
+      <MessageItem
+       key={message.uid}
+       message={message}
+       onEditMessage={onEditMessage}
+       onRemoveMessage={onRemoveMessage}
         />
     ))}
   </ul>
 );
 // luokkaolio yksittäiselle viestille
-class ProgramItem extends Component {
+class MessageItem extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
       editMode: false,
-      editText: this.props.program.text,
+      editText: this.props.message.text,
     };
   }
 
   onToggleEditMode = () => {
     this.setState(state => ({
       editMode: !state.editMode,
-      editText: this.props.program.text,
+      editText: this.props.message.text,
     }));
   };
 
@@ -174,7 +174,7 @@ class ProgramItem extends Component {
   };
 
   render() {
-  const { program, onRemoveProgram } = this.props;
+  const { message, onRemoveMessage } = this.props;
   const { editMode, editText } = this.state;
   
   
@@ -188,8 +188,8 @@ class ProgramItem extends Component {
         />
       ) : (
         <span>
-          <strong>{program.email}</strong> {program.text}
-          {program.editedAt && <span>(Edited)</span>}
+          <strong>{message.email}</strong> {message.text}
+          {message.editedAt && <span>(Edited)</span>}
         </span>
          )}
         {editMode ? (
@@ -204,7 +204,7 @@ class ProgramItem extends Component {
         {!editMode && (
           <button
             type="button"
-            onClick={() => onRemoveProgram(program.uid)}
+            onClick={() => onRemoveMessage(message.uid)}
           >
             Poista
           </button>
@@ -213,7 +213,7 @@ class ProgramItem extends Component {
     );
 }
 }
-const Programs = withFirebase(ProgramsBase);
+const Messages = withFirebase(MessagesBase);
 
 
 

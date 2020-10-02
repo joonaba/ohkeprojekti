@@ -34,9 +34,9 @@ class Firebase {
       users = () => this.db.ref('users');
 
 // ohjelma api
-      program = uid => this.db.ref(`programs/${uid}`);
+      message = uid => this.db.ref(`messages/${uid}`);
 
-      programs = () => this.db.ref('programs');
+      message = () => this.db.ref('messages');
 
 }
 
